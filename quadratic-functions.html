@@ -30,6 +30,10 @@
       height: 400px;
       margin-top: 30px;
     }
+    .output {
+      font-size: 18px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -56,8 +60,13 @@
 
   <div id="graph"></div>
 
+  <div class="output">
+    <p>Область определения: \( \mathbb{R} \) (все действительные числа)</p>
+    <p id="range">Область значений: </p>
+  </div>
+
   <script>
-    // Функция для обновления графика
+    // Функция для обновления графика и вывода области значений
     function updateGraph() {
       const a = parseFloat(document.getElementById('a').value);
       const b = parseFloat(document.getElementById('b').value);
@@ -75,6 +84,24 @@
         x.push(i);
         y.push(a * i * i + b * i + c);  // Квадратичная функция y = ax² + bx + c
       }
+
+      // Область определения всегда будет все действительные числа
+      const domain = "Область определения: ℝ (все действительные числа)";
+
+      // Определяем область значений
+      let range = '';
+      if (a > 0) {
+        const vertexY = c - (b * b) / (4 * a); // Минимум
+        range = `Область значений: [${vertexY.toFixed(2)}, +∞)`;
+      } else if (a < 0) {
+        const vertexY = c - (b * b) / (4 * a); // Максимум
+        range = `Область значений: (-∞, ${vertexY.toFixed(2)}]`;
+      } else {
+        range = `Область значений: ℝ (все действительные числа)`;
+      }
+
+      // Обновляем текст области значений
+      document.getElementById('range').textContent = range;
 
       // Настройка графика с Plotly
       const trace = {
